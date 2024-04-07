@@ -22,6 +22,6 @@ mongoose.connection.on("connected", () => {
 app.use("/api/users", userRoute);
 app.use("/api/pins", pinRoute);
 
-app.listen(1234, () => {
-    console.log("the server is running on 1234");
+app.listen(8800, () => {
+    console.log("the server is running on 8800");
 });

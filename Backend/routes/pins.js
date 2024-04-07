@@ -15,10 +15,9 @@ router.post("/", async (req, res)=>{
 })
 
 router.get("/", async (req, res)=>{
-    console.log(req.body);
     try{
-        const data = await Pin.find(req.body);
-        res.send("Yes found!!!!!");
+        const data = await Pin.find();
+        res.json(data);
     } catch(err){
         console.log(err);
         res.status(500).json(err);

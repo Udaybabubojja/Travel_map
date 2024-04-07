@@ -1,8 +1,49 @@
-.card{
-    width: 200px;
-    height: 240px;
-    border: 1px solid;
+.Card{
+    width: 250px;
+    height: 200px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+}
+.review{
+    padding: 6px;
+}
+label{
+    color: red;
+    font-size: 13px;
+}
+.stars{
+    color: gold;
+}
+.username{
+    font-size: 13px;
+}
+.date{
+    font-size: 11px;
+}
+form{
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+input{
+    border: none;
+    border-bottom: 1px solid gray;
+}
+input:focus{
+    border:none;
+}
+.submitButton{
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    margin-top: 25px;
+    cursor: pointer;
+}
+.submitButton:hover{
+    color: white;
+    background-color: black;
+    transition-delay: 1s;
+    transition: ease-in-out;
 }
