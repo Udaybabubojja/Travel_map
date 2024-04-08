@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
-
+const path = require("path")
 //register....
 
 router.post("/register", async (req, res)=>{
@@ -19,11 +19,20 @@ router.post("/register", async (req, res)=>{
         res.status(500).json(err);
     }
 });
-
+router.get("/register", (req, res) => {
+    try {
+        // Provide the direct path to Register.jsx
+        const registerFilePath = "frontend/src/components/Register.jsx";
+        res.sendFile(registerFilePath);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
 router.post("/login", async (req, res)=>{
     try{
         const user = await User.find({
-            email: req.body.email,
+            username: req.body.username,
         });
         if(user.length != 0){
             console.log("user Found", user);

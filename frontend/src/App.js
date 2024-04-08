@@ -7,15 +7,20 @@ import StarIcon from '@mui/icons-material/Star';
 import "./App.css";
 import axios from "axios";
 import { format } from "timeago.js";
-
+import Register from './components/Register';
+import Login from "./components/Login"
 function App() {
-  const currentUser = "uday"
+  const myStorage = window.localStorage;
+  const [currentUser, setCurrentUser] = useState("");
+  // const currentUser="babu";
   const [pins, setPins] = useState([]);
   const [currentPlaceId, setCurrentPlaceId] = useState(null);
   const [newPlace, setNewplace] = useState(null); 
   const [title, setTitle] = useState(null);
   const [desc, setDesc] = useState(null);
   const [rating, setRating] = useState(0);
+  const [showLogin, setShowLogin] = useState(false)
+  const [showRegister, setShowRegister] = useState(false)
   const [viewport, setViewport] = useState({
     longitude: 48,
     latitude: 17,
@@ -53,13 +58,18 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const newPin = {
-      username:"uday",
+      username:currentUser,
       title,
       desc, rating,
       lat:newPlace.lat,
       long:newPlace.long
     }
     try{
+      if(currentUser===""){ alert("Please login to add your review");
+      setShowLogin(true);
+      return ;
+    }
+
       const res = await axios.post("/pins", newPin);
       setPins([...pins, res.data]);
       setNewplace(null);
@@ -67,20 +77,27 @@ function App() {
       console.log(err);
     }
   }
+  const handleLogout = ()=>{
+    myStorage.removeItem("user");
+    setCurrentUser("")
+  }
   return (
+    <div className='App'>
+    { showRegister&& (<Register setShowRegister={setShowRegister} />)}
+    { showLogin&& (<Login setShowLogin={setShowLogin} myStorage={myStorage} setCurrentUser={setCurrentUser}/>)}
     <Map
       mapboxAccessToken={process.env.REACT_APP_TOKEN}
       initialViewState={viewport}
       onViewportChange={setViewport}
-      style={{ width: "100%", height: "100vh" }}
+      style={{ width: "100%", height: "100vh" , overflowBlock: true}}
       mapStyle="mapbox://styles/mapbox/streets-v9"
       onDblClick={handleAddClick}
       transitionDuration="8000"
     >
       {pins.map(p => (
-        <Marker key={p._id} longitude={p.long} latitude={p.lat} offsetLeft={-20} offsetTop={-10}>
+        <Marker key={p._id} longitude={p.long} latitude={p.lat} offsetLeft={ -viewport.zoom*3.5} offsetTop={ -viewport.zoom*3.5}>
           <LocationOnIcon
-            style={{ color: p.username===currentUser ? "blue" : "red", fontSize: "50px", cursor: 'pointer' }} 
+            style={{ color: p.username===currentUser ? "blue" : "red", fontSize: viewport.zoom*7, cursor: 'pointer' }} 
             onClick={() => handleMarker(p._id, p.lat, p.long)}
           />
           {console.log(p._id, currentPlaceId)}
@@ -97,8 +114,9 @@ function App() {
                 <h4 className='place'>{p.title}</h4>
                 <label>Rating: </label>
                 <div className='stars'>
-                  <StarIcon />
-                  <StarIcon />
+                  {Array(p.rating).fill(
+                    <StarIcon className='star'/>
+                  )}
                 </div>
                 <label>Review: </label>
                 <p className='review'>{p.desc}</p>
@@ -142,9 +160,19 @@ function App() {
                 </div>
             </Popup>
           )}
+          
         </Marker>
       ))}
+      {currentUser ? (<button className='button logout' onClick={handleLogout}>LogOut</button>) : 
+      (
+        <div className='buttons'>
+          <button className='button login' onClick={()=> setShowLogin(true)}>Login</button>
+          <button className='button signup' onClick={()=> setShowRegister(true)}>Register</button>
+        </div>
+      )}
+      
     </Map>
+    </div>
   );
 }
 

@@ -47,3 +47,26 @@ input:focus{
     transition-delay: 1s;
     transition: ease-in-out;
 }
+
+.button{
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    color:white;
+}
+.logout{
+    background-color: blueviolet;
+}
+
+.login{
+    background-color: chocolate;
+}
+.signup{
+    background-color: crimson;
+}
+
+.buttons, .logout{
+    position:absolute;
+    top: 10px;
+    right: 10px;
+}
