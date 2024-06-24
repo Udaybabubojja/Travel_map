@@ -1,4 +1,3 @@
-// Register.jsx
 
 import React, { useState } from "react";
 import axios from "axios";
@@ -10,6 +9,7 @@ function Register({setShowRegister}) {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
+  console.log(process.env.REACT_APP_BACKEND_URL)
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -18,7 +18,7 @@ function Register({setShowRegister}) {
         email:email,
         password:password
       }
-      const response = await axios.post("/users/register", newUser);
+      const response = await axios.post("https://travel-map-ac8b.onrender.com/api/users/register", newUser);
       console.log("Registration successful:", response.data);
       setError(false)
       setSuccess(true)

@@ -2,31 +2,30 @@ const express = require("express");
 const mongoose = require("mongoose");
 const pinRoute = require("./routes/pins");
 const userRoute = require("./routes/users");
-
+const cors = require("cors");
 const app = express();
+app.use(cors());
 app.use(express.json());
 
-// Use the MongoDB Atlas connection string
-const atlasUrl = "mongodb+srv://21pa1a0518:OY18rabslSlTe9NU@uday.jank66a.mongodb.net/?retryWrites=true&w=majority&appName=Uday";
+// Use the MongoDB Atlas connection string with the 'Map' database name
+const atlasUrl = "mongodb+srv://21pa1a0518:OY18rabslSlTe9NU@uday.jank66a.mongodb.net/Map?retryWrites=true&w=majority&appName=Uday";
 
 mongoose.connect(atlasUrl, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
 }).then(() => {
-    console.log("000");
+    console.log("Connected to the MongoDB Atlas");
 }).catch(err => {
-    console.log("The error is Occured!...", err);
+    console.log("An error occurred while connecting to MongoDB Atlas", err);
 });
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 mongoose.connection.on("connected", () => {
-    console.log("-------------Connected to mapDB---------");
+    console.log("-------------Connected to Map database---------");
 });
 
 app.use("/api/users", userRoute);
 app.use("/api/pins", pinRoute);
 
 app.listen(8800, () => {
-    console.log("the server is running on 8800");
+    console.log("The server is running on port 8800");
 });
