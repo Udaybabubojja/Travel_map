@@ -3,8 +3,13 @@ const mongoose = require("mongoose");
 const pinRoute = require("./routes/pins");
 const userRoute = require("./routes/users");
 const cors = require("cors");
+
 const app = express();
-app.use(cors());
+app.use(cors()); // Enable CORS for all routes
+
+// Optionally, you can specify the origin explicitly:
+// app.use(cors({ origin: 'http://localhost:3000' }));
+
 app.use(express.json());
 
 // Use the MongoDB Atlas connection string with the 'Map' database name
@@ -26,6 +31,8 @@ mongoose.connection.on("connected", () => {
 app.use("/api/users", userRoute);
 app.use("/api/pins", pinRoute);
 
-app.listen(8800, () => {
-    console.log("The server is running on port 8800");
+const PORT = process.env.PORT || 8800;
+
+app.listen(PORT, () => {
+    console.log(`The server is running on port ${PORT}`);
 });
