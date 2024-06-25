@@ -19,16 +19,7 @@ router.post("/register", async (req, res)=>{
         res.status(500).json(err);
     }
 });
-router.get("/register", (req, res) => {
-    try {
-        // Provide the direct path to Register.jsx
-        const registerFilePath = "frontend/src/components/Register.jsx";
-        res.sendFile(registerFilePath);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: "Internal Server Error" });
-    }
-});
+
 router.post("/login", async (req, res)=>{
     try{
         const user = await User.find({

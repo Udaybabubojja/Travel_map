@@ -7,9 +7,6 @@ const cors = require("cors");
 const app = express();
 app.use(cors()); // Enable CORS for all routes
 
-// Optionally, you can specify the origin explicitly:
-// app.use(cors({ origin: 'http://localhost:3000' }));
-
 app.use(express.json());
 
 // Use the MongoDB Atlas connection string with the 'Map' database name
